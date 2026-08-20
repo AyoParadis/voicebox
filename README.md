@@ -2,7 +2,7 @@
 
 No terminal experience required. Copy the complete prompt below into Codex, Claude Code, Cursor, Windsurf, Cline, or another coding agent that can run terminal commands. The agent will inspect your computer, install this fork, preserve existing Voicebox data, and verify the result.
 
-<details open>
+<details>
 <summary><strong>Copy this prompt into your coding agent</strong></summary>
 
 ```text
