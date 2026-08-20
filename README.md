@@ -1,3 +1,63 @@
+## AI Installation
+
+No terminal experience required. Copy the complete prompt below into Codex, Claude Code, Cursor, Windsurf, Cline, or another coding agent that can run terminal commands. The agent will inspect your computer, install this fork, preserve existing Voicebox data, and verify the result.
+
+<details open>
+<summary><strong>Copy this prompt into your coding agent</strong></summary>
+
+```text
+Install the public Voicebox fork from https://github.com/AyoParadis/voicebox on this computer and leave me with a working desktop app. You are authorized to inspect the local system, clone the repository, install normal development prerequisites, build Voicebox, install the built app, and run local verification. Follow these safeguards and do not stop at instructions for me unless a step genuinely requires my approval or physical interaction.
+
+1. Inspect before changing anything:
+   - Detect operating system, CPU architecture, available GPU/backend, RAM, free disk space, shell, and existing package managers.
+   - Check whether Voicebox, a Voicebox source checkout, or Voicebox user data already exists.
+   - Read this repository's current README, CONTRIBUTING.md, justfile, package.json, and platform-specific build documentation before choosing commands. Use repository commands instead of inventing alternatives.
+
+2. Protect existing work:
+   - Never delete or overwrite voice profiles, recordings, generations, downloaded models, databases, or an existing source checkout.
+   - Before replacing or upgrading an existing installation, identify its data directory and create a timestamped backup in a user-owned location. Tell me where the backup is.
+   - If an existing checkout has uncommitted changes, stop and explain them before modifying it.
+   - Never upload, commit, or expose voice samples, transcripts, credentials, tokens, or local Voicebox data.
+
+3. Install from this fork:
+   - Clone https://github.com/AyoParadis/voicebox into a sensible user-owned development folder. If a clean clone already exists, update it safely.
+   - Keep `origin` pointed at AyoParadis/voicebox. Configure `upstream` as fetch-only from https://github.com/jamiepine/voicebox so future owner commits can be merged safely.
+   - Use the fork's `main` branch. Do not discard fork-specific commits while syncing upstream.
+   - Install only missing prerequisites supported by this repository. Ask before using administrator privileges, changing system security settings, installing a system-wide service, or replacing an existing toolchain.
+   - Run the documented setup and production build commands for this operating system. Do not disable tests, signing checks, Gatekeeper, antivirus, or permission protections to force a build through.
+
+4. Use Computer Use when available:
+   - Call the Computer Use or computer-use tool for graphical steps that terminal commands cannot complete reliably, including opening the built installer/app, handling file pickers, navigating Voicebox settings, and checking that the UI launched correctly.
+   - For macOS Accessibility, Input Monitoring, Microphone, or security dialogs, explain why each permission is needed and let me approve it. Never silently grant permissions or click through security warnings.
+   - If Computer Use is unavailable, give me one precise GUI action at a time, then continue terminal work after I confirm it.
+
+5. Configure models conservatively:
+   - Do not download every model or engine.
+   - Explain expected download size and hardware compatibility before a large download.
+   - Unless I choose another engine, use Qwen3-TTS 1.7B with MLX on Apple Silicon. On other hardware, choose one well-supported model/backend appropriate for the detected GPU and memory.
+   - Keep any model already downloaded and working. Do not remove it merely to perform a clean install.
+
+6. Verify the installation:
+   - Run relevant repository checks and report pass/fail results. Fix failures caused by the installation before declaring success.
+   - Launch Voicebox and confirm its local server responds at http://127.0.0.1:17493/health.
+   - Confirm the health response reports the expected backend. On Apple Silicon, verify MLX is selected and the backend variant reports `mps`.
+   - Confirm the app can open Model Management and Voice Profiles without errors. Do not create or clone a voice without my explicit choice of audio.
+   - If a suitable voice profile already exists, ask before running one short generation test because generation may download a large model or consume significant resources.
+
+7. Finish with a concise report containing:
+   - Installed Voicebox version and commit.
+   - App path, source path, data path, and backup path if created.
+   - Detected acceleration backend and selected voice model.
+   - Checks performed and exact outcomes.
+   - Any remaining manual permission or model-download step.
+
+If blocked, preserve all completed work, quote the shortest decisive error, diagnose its cause, and continue with the safest supported fix. Do not hide failures or claim the app works without launching it and checking the health endpoint.
+```
+
+</details>
+
+---
+
 <p align="center">
   <img src=".github/assets/icon-dark.webp" alt="Voicebox" width="120" height="120" />
 </p>
