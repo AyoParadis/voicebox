@@ -44,7 +44,15 @@ Install the public Voicebox fork from https://github.com/AyoParadis/voicebox on 
    - Confirm the app can open Model Management and Voice Profiles without errors. Do not create or clone a voice without my explicit choice of audio.
    - If a suitable voice profile already exists, ask before running one short generation test because generation may download a large model or consume significant resources.
 
-7. Finish with a concise report containing:
+7. Create a safe weekly update automation:
+   - After installation passes, create a user-level scheduled task that checks for and installs updates from this fork once every seven days. Use the operating system's native scheduler (such as launchd on macOS, a systemd user timer on Linux, or Task Scheduler on Windows) without requiring administrator privileges. When supported, make a missed run execute after the computer next becomes available.
+   - Store the updater script and logs in a user-owned location outside the Git checkout. Use only this fork's `origin/main`; never merge directly from upstream during an unattended run.
+   - On each run, verify the checkout is on `main` and clean, fetch `origin`, and do nothing if no newer commit exists. Update only with a fast-forward. If local changes, divergence, conflicts, or an unsafe migration are detected, stop without resetting, stashing, deleting, or overwriting anything, then record the reason in the log.
+   - Preserve all Voicebox user data. Before an update that may migrate data, create a timestamped backup of relevant configuration and database files. Never delete or needlessly duplicate recordings, voice profiles, generated audio, or downloaded models.
+   - After updating, rerun the documented production build/install steps and a non-interactive health check. Do not bypass security protections or open the GUI during an unattended run. Log the previous commit, installed commit, time, checks, and exact outcome.
+   - Report the automation name, weekly schedule, updater path, log path, next run, and commands to run it immediately or disable it safely.
+
+8. Finish with a concise report containing:
    - Installed Voicebox version and commit.
    - App path, source path, data path, and backup path if created.
    - Detected acceleration backend and selected voice model.
