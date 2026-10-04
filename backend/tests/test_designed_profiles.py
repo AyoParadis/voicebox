@@ -137,3 +137,21 @@ async def test_backend_layers_instruct_on_design_prompt(monkeypatch):
     await backend.generate("Hello.", vp, language="fr", instruct="Whisper it.")
     assert calls[-1][1] == f"{DESIGN.rstrip('. ')}. Whisper it."
     assert calls[-1][2] == "French"
+
+
+@pytest.mark.asyncio
+async def test_update_coerces_legacy_designed_profile_engine(test_db, mock_profiles_dir):
+    from backend.database.models import VoiceProfile as DBVoiceProfile
+    from backend.services.profiles import update_profile
+
+    profile = await create_profile(
+        VoiceProfileCreate(name="Legacy", language="en", voice_type="designed", design_prompt=DESIGN),
+        test_db,
+    )
+    row = test_db.query(DBVoiceProfile).filter_by(id=profile.id).first()
+    row.default_engine = "qwen"
+    test_db.commit()
+
+    updated = await update_profile(profile.id, VoiceProfileCreate(name="Renamed", language="en"), test_db)
+    assert updated.name == "Renamed"
+    assert updated.default_engine == DEFAULT_DESIGN_ENGINE

@@ -407,6 +407,10 @@ async def update_profile(
     preset_voice_id = getattr(profile, "preset_voice_id", None)
     design_prompt = getattr(profile, "design_prompt", None)
     default_engine = data.default_engine if data.default_engine is not None else getattr(profile, "default_engine", None)
+    # Designed profiles created before the design engine existed could carry
+    # any default_engine; coerce rather than make the profile uneditable.
+    if voice_type == "designed" and default_engine not in DESIGN_ENGINES:
+        default_engine = DEFAULT_DESIGN_ENGINE
 
     validation_error = _validate_profile_fields(
         voice_type=voice_type,
@@ -424,6 +428,8 @@ async def update_profile(
     profile.personality = data.personality
     if data.default_engine is not None:
         profile.default_engine = data.default_engine or None  # empty string → NULL
+    if voice_type == "designed":
+        profile.default_engine = default_engine
     profile.updated_at = datetime.now(UTC)
 
     db.commit()

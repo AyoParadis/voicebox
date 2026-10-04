@@ -212,11 +212,12 @@ class QwenVoiceDesignBackend:
             # state. Forcing offline here (issue #462) regressed online
             # users whose libraries issue legitimate metadata lookups
             # during generation.
-            wavs, sample_rate = self.model.generate_voice_design(
-                text=text,
-                instruct=combined_instruct,
-                language=lang_name.capitalize() if lang_name != "auto" else "Auto",
-            )
+            with torch.inference_mode():
+                wavs, sample_rate = self.model.generate_voice_design(
+                    text=text,
+                    instruct=combined_instruct,
+                    language=lang_name.capitalize() if lang_name != "auto" else "Auto",
+                )
             return wavs[0], sample_rate
 
         audio, sample_rate = await asyncio.to_thread(_generate_sync)
