@@ -1,11 +1,11 @@
 import { Info, Mic, Sparkles } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isProfileCompatibleWithEngine } from '@/components/Generation/EngineModelSelector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useProfiles } from '@/lib/hooks/useProfiles';
 import { useUIStore } from '@/stores/uiStore';
-import { isProfileCompatibleWithEngine } from '@/components/Generation/EngineModelSelector';
 import { ProfileCard } from './ProfileCard';
 import { ProfileForm } from './ProfileForm';
 
