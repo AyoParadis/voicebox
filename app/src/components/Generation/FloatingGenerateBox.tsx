@@ -438,7 +438,7 @@ export function FloatingGenerateBox({
                   )}
                 </AnimatePresence>
 
-                {/* Instruct toggle — only for Qwen CustomVoice, which actually honors the kwarg */}
+                {/* Instruct toggle — only for engines that honor the kwarg (see INSTRUCT_ENGINES) */}
                 <AnimatePresence>
                   {isExpanded && engineSupportsInstruct(form.watch('engine')) && (
                     <motion.div
@@ -525,7 +525,11 @@ export function FloatingGenerateBox({
                         <FormControl>
                           <Textarea
                             {...field}
-                            placeholder={t('generation.instruct.placeholder')}
+                            placeholder={
+                              form.watch('engine') === 'omnivoice'
+                                ? t('generation.instruct.placeholderOmnivoice')
+                                : t('generation.instruct.placeholder')
+                            }
                             className="resize-none bg-transparent border border-accent/20 focus-visible:ring-1 focus-visible:ring-accent/40 rounded-2xl text-sm placeholder:text-muted-foreground/60 w-full px-3 py-2"
                             style={{ minHeight: '60px', maxHeight: '160px' }}
                             maxLength={500}
