@@ -152,6 +152,7 @@ export function FloatingGenerateBox({
     | 'chatterbox_turbo'
     | 'tada'
     | 'kokoro'
+    | 'omnivoice'
     | 'qwen_custom_voice';
   useEffect(() => {
     if (selectedProfile?.language) {

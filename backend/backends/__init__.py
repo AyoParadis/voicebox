@@ -399,7 +399,11 @@ def _get_non_qwen_tts_configs() -> list[ModelConfig]:
         ),
         ModelConfig(
             model_name="omnivoice",
-            display_name="OmniVoice (Multilingual)",
+            # Non-commercial: the OmniVoice weights are CC-BY-NC (the code is
+            # Apache-2.0 and the bundled Higgs Audio V2 codec is under the Boson
+            # community licence). Keep the label visible and never make this
+            # engine a default.
+            display_name="OmniVoice (Multilingual, non-commercial)",
             engine="omnivoice",
             hf_repo_id="k2-fsa/OmniVoice",
             size_mb=3300,

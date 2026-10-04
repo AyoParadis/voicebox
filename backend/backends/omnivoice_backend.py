@@ -4,6 +4,12 @@ OmniVoice backend implementation.
 Wraps k2-fsa/OmniVoice, a diffusion-language-model zero-shot TTS covering 600+
 languages. ~3.3 GB of weights, 24 kHz output, RTF down to 0.025 on CUDA.
 
+Licensing: the omnivoice package and the vendored codec code are Apache-2.0,
+but the k2-fsa/OmniVoice weights are CC-BY-NC (the model card cites Emilia in
+the training data) and the bundled Higgs Audio V2 codec weights are under the
+Boson community licence. The engine is therefore labelled non-commercial in
+the UI and must never be a default.
+
 Two things set this engine apart from the rest of the roster:
 
   - It needs ``transformers.HiggsAudioV2TokenizerModel`` as its audio codec,
