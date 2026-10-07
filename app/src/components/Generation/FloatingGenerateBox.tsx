@@ -16,6 +16,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { apiClient } from '@/lib/api/client';
+import { engineSupportsInstruct } from '@/lib/constants/engines';
 import { getLanguageOptionsForEngine, type LanguageCode } from '@/lib/constants/languages';
 import { useGenerationForm } from '@/lib/hooks/useGenerationForm';
 import { useProfile, useProfiles } from '@/lib/hooks/useProfiles';
@@ -24,7 +25,7 @@ import { cn } from '@/lib/utils/cn';
 import { useGenerationStore } from '@/stores/generationStore';
 import { useStoryStore } from '@/stores/storyStore';
 import { useUIStore } from '@/stores/uiStore';
-import { EngineModelSelector, engineSupportsInstruct } from './EngineModelSelector';
+import { EngineModelSelector } from './EngineModelSelector';
 import { ParalinguisticInput } from './ParalinguisticInput';
 
 interface FloatingGenerateBoxProps {
@@ -152,7 +153,8 @@ export function FloatingGenerateBox({
     | 'tada'
     | 'kokoro'
     | 'qwen_custom_voice'
-    | 'qwen_voice_design';
+    | 'qwen_voice_design'
+    | 'omnivoice';
   useEffect(() => {
     if (selectedProfile?.language) {
       form.setValue('language', selectedProfile.language as LanguageCode);
@@ -443,7 +445,7 @@ export function FloatingGenerateBox({
                   )}
                 </AnimatePresence>
 
-                {/* Instruct toggle — only for engines that actually honor the kwarg */}
+                {/* Instruct toggle — only for engines that honor the kwarg (see INSTRUCT_ENGINES) */}
                 <AnimatePresence>
                   {isExpanded && engineSupportsInstruct(form.watch('engine')) && (
                     <motion.div
@@ -530,7 +532,11 @@ export function FloatingGenerateBox({
                         <FormControl>
                           <Textarea
                             {...field}
-                            placeholder={t('generation.instruct.placeholder')}
+                            placeholder={
+                              form.watch('engine') === 'omnivoice'
+                                ? t('generation.instruct.placeholderOmnivoice')
+                                : t('generation.instruct.placeholder')
+                            }
                             className="resize-none bg-transparent border border-accent/20 focus-visible:ring-1 focus-visible:ring-accent/40 rounded-2xl text-sm placeholder:text-muted-foreground/60 w-full px-3 py-2"
                             style={{ minHeight: '60px', maxHeight: '160px' }}
                             maxLength={500}
