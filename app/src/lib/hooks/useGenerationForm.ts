@@ -23,6 +23,7 @@ const generationSchema = z.object({
     .enum([
       'qwen',
       'qwen_custom_voice',
+      'qwen_voice_design',
       'luxtts',
       'chatterbox',
       'chatterbox_turbo',
@@ -102,11 +103,13 @@ export function useGenerationForm(options: UseGenerationFormOptions = {}) {
                   : 'tada-1b'
                 : engine === 'kokoro'
                   ? 'kokoro'
-                  : engine === 'omnivoice'
-                    ? 'omnivoice'
-                    : engine === 'qwen_custom_voice'
-                      ? `qwen-custom-voice-${data.modelSize}`
-                      : `qwen-tts-${data.modelSize}`;
+                  : engine === 'qwen_voice_design'
+                    ? 'qwen-voice-design-1.7B'
+                    : engine === 'omnivoice'
+                      ? 'omnivoice'
+                      : engine === 'qwen_custom_voice'
+                        ? `qwen-custom-voice-${data.modelSize}`
+                        : `qwen-tts-${data.modelSize}`;
       const displayName =
         engine === 'luxtts'
           ? 'LuxTTS'
@@ -120,15 +123,17 @@ export function useGenerationForm(options: UseGenerationFormOptions = {}) {
                   : 'TADA 1B'
                 : engine === 'kokoro'
                   ? 'Kokoro 82M'
-                  : engine === 'omnivoice'
-                    ? 'OmniVoice'
-                    : engine === 'qwen_custom_voice'
-                      ? data.modelSize === '1.7B'
-                        ? 'Qwen CustomVoice 1.7B'
-                        : 'Qwen CustomVoice 0.6B'
-                      : data.modelSize === '1.7B'
-                        ? 'Qwen TTS 1.7B'
-                        : 'Qwen TTS 0.6B';
+                  : engine === 'qwen_voice_design'
+                    ? 'Qwen VoiceDesign 1.7B'
+                    : engine === 'omnivoice'
+                      ? 'OmniVoice'
+                      : engine === 'qwen_custom_voice'
+                        ? data.modelSize === '1.7B'
+                          ? 'Qwen CustomVoice 1.7B'
+                          : 'Qwen CustomVoice 0.6B'
+                        : data.modelSize === '1.7B'
+                          ? 'Qwen TTS 1.7B'
+                          : 'Qwen TTS 0.6B';
 
       // Check if model needs downloading
       try {

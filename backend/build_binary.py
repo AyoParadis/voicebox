@@ -121,6 +121,8 @@ def build_server(cuda=False, rocm=False):
             "--hidden-import",
             "backend.backends.qwen_custom_voice_backend",
             "--hidden-import",
+            "backend.backends.qwen_voice_design_backend",
+            "--hidden-import",
             "backend.utils.audio",
             "--hidden-import",
             "backend.utils.cache",
@@ -392,7 +394,13 @@ def build_server(cuda=False, rocm=False):
             )
         args.extend(gpu_hidden)
 
-    if rocm:
+    if rocm and platform.system() == "Windows":
+        # Windows delivers the ROCm runtime as separate rocm_sdk wheels (there is
+        # no system ROCm install). On Linux the download.pytorch.org/whl/rocm
+        # torch wheels bundle the HIP/MIOpen/rocBLAS .so runtime inside
+        # torch/lib/ directly, so none of the rocm_sdk collection below applies —
+        # PyInstaller's torch hook picks those .so up automatically.
+        #
         # rocm_sdk imports its backend packages dynamically via
         # importlib.import_module(py_package_name), which PyInstaller's
         # static analyzer cannot see. We must collect them explicitly —

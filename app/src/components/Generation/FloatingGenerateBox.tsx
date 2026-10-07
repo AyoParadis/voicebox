@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils/cn';
 import { useGenerationStore } from '@/stores/generationStore';
 import { useStoryStore } from '@/stores/storyStore';
 import { useUIStore } from '@/stores/uiStore';
-import { EngineModelSelector } from './EngineModelSelector';
+import { EngineModelSelector, engineSupportsInstruct } from './EngineModelSelector';
 import { ParalinguisticInput } from './ParalinguisticInput';
 
 interface FloatingGenerateBoxProps {
@@ -152,8 +152,9 @@ export function FloatingGenerateBox({
     | 'chatterbox_turbo'
     | 'tada'
     | 'kokoro'
-    | 'omnivoice'
-    | 'qwen_custom_voice';
+    | 'qwen_custom_voice'
+    | 'qwen_voice_design'
+    | 'omnivoice';
   useEffect(() => {
     if (selectedProfile?.language) {
       form.setValue('language', selectedProfile.language as LanguageCode);
@@ -162,10 +163,16 @@ export function FloatingGenerateBox({
     const engine = selectedProfile?.default_engine ?? selectedProfile?.preset_engine;
     if (engine) {
       form.setValue('engine', engine as EngineValue);
-    } else if (selectedProfile && selectedProfile.voice_type !== 'preset') {
-      // Cloned/designed profile with no default — ensure a compatible (non-preset) engine
+    } else if (
+      selectedProfile &&
+      selectedProfile.voice_type !== 'preset' &&
+      selectedProfile.voice_type !== 'designed'
+    ) {
+      // Cloned profile with no default — ensure a compatible (non-preset) engine.
+      // Designed profiles are excluded: they always carry a design engine and
+      // would be broken by a fallback to qwen.
       const currentEngine = form.getValues('engine');
-      const presetEngines = new Set(['kokoro', 'qwen_custom_voice']);
+      const presetEngines = new Set(['kokoro', 'qwen_custom_voice', 'qwen_voice_design']);
       if (currentEngine && presetEngines.has(currentEngine)) {
         form.setValue('engine', 'qwen');
       }

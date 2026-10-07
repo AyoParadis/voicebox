@@ -10,7 +10,11 @@
  * vocabulary of attributes ("female, low pitch, british accent") and raises on
  * anything outside it.
  */
-export const INSTRUCT_ENGINES: ReadonlySet<string> = new Set(['qwen_custom_voice', 'omnivoice']);
+export const INSTRUCT_ENGINES: ReadonlySet<string> = new Set([
+  'qwen_custom_voice',
+  'qwen_voice_design',
+  'omnivoice',
+]);
 
 /** Whether the given engine should show and forward the instruct field. */
 export function engineSupportsInstruct(engine: string | undefined): boolean {

@@ -74,6 +74,7 @@ export interface GenerationRequest {
   engine?:
     | 'qwen'
     | 'qwen_custom_voice'
+    | 'qwen_voice_design'
     | 'luxtts'
     | 'chatterbox'
     | 'chatterbox_turbo'
@@ -292,7 +293,7 @@ export interface HealthResponse {
   vram_used_mb?: number;
   backend_type?: string;
   backend_variant?: string; // "cpu", "cuda", or "rocm"
-  supports_rocm?: boolean; // AMD GPU on Windows — the ROCm backend is applicable
+  supports_rocm?: boolean; // AMD GPU on Windows or Linux (/dev/kfd) — the ROCm backend is applicable
   cloud_enabled?: boolean; // VOICEBOX_CLOUD_ENABLED on the backend — show the Cloud section
 }
 
@@ -419,6 +420,9 @@ export interface StoryResponse {
   updated_at: string;
   item_count: number;
 }
+
+export type GenerationExportFormat = 'wav' | 'mp3';
+export type StoryExportFormat = 'wav' | 'mp3' | 'm4b';
 
 export interface StoryItemDetail {
   id: string;
