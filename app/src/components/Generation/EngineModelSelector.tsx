@@ -59,15 +59,6 @@ const CLONING_ENGINES = new Set([
 /** Engines that synthesise a voice from a written description. */
 export const DESIGN_ENGINES = new Set(['qwen_voice_design']);
 
-/**
- * Engines that actually honor the instruct kwarg at model level. Base
- * Qwen3-TTS accepts it but ignores it, so it is deliberately absent.
- */
-const INSTRUCT_ENGINES = new Set(['qwen_custom_voice', 'qwen_voice_design']);
-
-export function engineSupportsInstruct(engine?: string): boolean {
-  return !!engine && INSTRUCT_ENGINES.has(engine);
-}
 
 function getAvailableOptions(selectedProfile?: VoiceProfileResponse | null) {
   if (!selectedProfile) return ENGINE_OPTIONS;
