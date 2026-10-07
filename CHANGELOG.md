@@ -7,9 +7,16 @@
 
 ## [Unreleased]
 
-### Features
+### Text-to-speech
 
 - **Design a voice from a written description.** The profile form gains a third source, "Describe a voice", next to clone-from-audio and built-in voice: write the voice you want ("a warm, gravelly older man with a slow Scottish lilt") and the profile is created as a `designed` voice backed by the new `qwen_voice_design` engine (Qwen3-TTS-12Hz-1.7B-VoiceDesign, 10 languages, local, Apache-2.0 weights). Designed profiles work everywhere a profile does: `/generate`, `/speak`, MCP `voicebox_speak`, stories, and dictation TTS. A per-generation instruct layers onto the description instead of replacing it. — @Lvigentini ([#1012](https://github.com/jamiepine/voicebox/pull/1012))
+
+### Dictation and agents
+
+- **Bring your own LLM for refinement and personalities.** Settings → Captures → Refinement gains a *Custom LLM endpoint (advanced)* section: point it at any server that speaks OpenAI's `/v1/chat/completions` (llama.cpp, vLLM, LM Studio, LocalAI, Ollama's OpenAI shim, OpenRouter, or OpenAI itself) with a model name and an optional API key, and dictation refinement and personality compose/rewrite go there instead of the bundled Qwen3. Leave the endpoint blank and nothing changes. The key is write-only: the settings API reports only whether one is stored. The dictation readiness checklist treats a configured endpoint as ready, the Models page keeps managing the on-device Qwen regardless, and a failing endpoint surfaces as a clear error naming the URL and status. — @ext-sakamoro ([#947](https://github.com/jamiepine/voicebox/pull/947))
+### API
+
+- **OpenAI-compatible text-to-speech API.** `POST /v1/audio/speech` and `GET /v1/models` accept OpenAI's request shape, so the official `openai` SDKs, Open WebUI, Home Assistant and any other OpenAI TTS client become a local, offline TTS by changing only the base URL. `voice` is a Voicebox profile (name or id, falling back to the per-client binding and default voice like `/speak`); `model` is a Voicebox engine or model variant, with `tts-1`, `tts-1-hd` and `gpt-4o-mini-tts` accepted as aliases for the profile's configured engine; `response_format` supports `wav`, `mp3`, `flac`, `opus`, `pcm` and (with ffmpeg) `aac`; `speed` is a pitch-preserving time stretch; `instructions` feeds the engine's instruct prompt. Errors use OpenAI's `{"error": {...}}` body, and the endpoint is documented on the MCP Server page. — @neuron-tech-ai ([#1170](https://github.com/jamiepine/voicebox/pull/1170), from [#656](https://github.com/jamiepine/voicebox/pull/656); fixes [#10](https://github.com/jamiepine/voicebox/issues/10))
 
 ## [0.6.0] - 2026-10-04
 
