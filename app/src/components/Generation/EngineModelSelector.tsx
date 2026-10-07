@@ -59,7 +59,6 @@ const CLONING_ENGINES = new Set([
 /** Engines that synthesise a voice from a written description. */
 export const DESIGN_ENGINES = new Set(['qwen_voice_design']);
 
-
 function getAvailableOptions(selectedProfile?: VoiceProfileResponse | null) {
   if (!selectedProfile) return ENGINE_OPTIONS;
   return ENGINE_OPTIONS.filter((opt) => isProfileCompatibleWithEngine(selectedProfile, opt.engine));
