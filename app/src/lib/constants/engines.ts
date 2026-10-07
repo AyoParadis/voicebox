@@ -5,10 +5,11 @@
  *
  * Base Qwen3-TTS accepts the kwarg and silently ignores it, so it stays out.
  *
- * Note the two members read the field very differently: Qwen CustomVoice takes
- * free-form prose ("speak in an angry tone"), while OmniVoice takes a closed
- * vocabulary of attributes ("female, low pitch, british accent") and raises on
- * anything outside it.
+ * The members read the field differently: Qwen CustomVoice and Qwen
+ * VoiceDesign take free-form prose ("speak in an angry tone"; VoiceDesign
+ * layers it on top of the profile's stored design prompt), while OmniVoice
+ * takes a closed vocabulary of attributes ("female, low pitch, british
+ * accent") and raises on anything outside it.
  */
 export const INSTRUCT_ENGINES: ReadonlySet<string> = new Set([
   'qwen_custom_voice',
