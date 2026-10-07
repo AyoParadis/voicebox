@@ -155,3 +155,10 @@ async def test_update_coerces_legacy_designed_profile_engine(test_db, mock_profi
     updated = await update_profile(profile.id, VoiceProfileCreate(name="Renamed", language="en"), test_db)
     assert updated.name == "Renamed"
     assert updated.default_engine == DEFAULT_DESIGN_ENGINE
+
+
+def test_openai_compat_alias_resolves_legacy_designed_profile():
+    from backend.routes.openai_compat import resolve_model
+
+    legacy = SimpleNamespace(voice_type="designed", default_engine=None, preset_engine=None)
+    assert resolve_model("tts-1", legacy) == (DEFAULT_DESIGN_ENGINE, None)

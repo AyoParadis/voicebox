@@ -50,16 +50,7 @@ def _get_or_create_import_profile(db: Session) -> DBVoiceProfile:
 
 
 def _resolve_generation_engine(data: models.GenerationRequest, profile) -> str:
-    if data.engine:
-        return data.engine
-    stored = getattr(profile, "default_engine", None) or getattr(profile, "preset_engine", None)
-    if stored:
-        return stored
-    # Designed profiles created before the design engine existed carry no
-    # default_engine; "qwen" would be rejected by validate_profile_engine.
-    if getattr(profile, "voice_type", None) == "designed":
-        return profiles.DEFAULT_DESIGN_ENGINE
-    return "qwen"
+    return data.engine or profiles.default_engine_for_profile(profile)
 
 
 @router.post("/generate", response_model=models.GenerationResponse)

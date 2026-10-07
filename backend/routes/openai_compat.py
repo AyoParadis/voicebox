@@ -169,9 +169,10 @@ def resolve_model(model: str, profile) -> tuple[str, str | None]:
     ``model_size`` is ``None`` for engines with a single variant.
     """
     from ..backends import TTS_ENGINES, engine_has_model_sizes, get_tts_model_configs
+    from ..services import profiles
 
     if model in OPENAI_MODEL_ALIASES:
-        engine = getattr(profile, "default_engine", None) or getattr(profile, "preset_engine", None) or "qwen"
+        engine = profiles.default_engine_for_profile(profile)
     elif model in TTS_ENGINES:
         engine = model
     else:

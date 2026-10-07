@@ -126,6 +126,18 @@ def _validate_profile_fields(
     return None
 
 
+def default_engine_for_profile(profile) -> str:
+    """The engine a request without an explicit one should use for this profile."""
+    stored = getattr(profile, "default_engine", None) or getattr(profile, "preset_engine", None)
+    if stored:
+        return stored
+    # Designed profiles created before the design engine existed carry no
+    # default_engine; "qwen" would be rejected by validate_profile_engine.
+    if getattr(profile, "voice_type", None) == "designed":
+        return DEFAULT_DESIGN_ENGINE
+    return "qwen"
+
+
 def validate_profile_engine(profile, engine: str) -> None:
     voice_type = getattr(profile, "voice_type", None) or "cloned"
 
